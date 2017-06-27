@@ -100,10 +100,7 @@ public class Operation implements Serializable {
             return false;
         }
         Operation operation = (Operation) o;
-        if (operation.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), operation.getId());
+        return !(operation.getId() == null || getId() == null) && Objects.equals(getId(), operation.getId());
     }
 
     @Override
