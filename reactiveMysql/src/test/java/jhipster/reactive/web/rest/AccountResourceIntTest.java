@@ -35,6 +35,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -410,8 +411,10 @@ public class AccountResourceIntTest {
 
         Optional<User> userDup = userRepository.findOneByLogin("badguy");
         assertThat(userDup.isPresent()).isTrue();
+        Optional<Authority> authorityOp = authorityRepository.findById(AuthoritiesConstants.USER);
+        assertTrue(authorityOp.isPresent());
         assertThat(userDup.get().getAuthorities()).hasSize(1)
-            .containsExactly(authorityRepository.getOne(AuthoritiesConstants.USER));
+            .containsExactly(authorityOp.get());
     }
 
     @Test

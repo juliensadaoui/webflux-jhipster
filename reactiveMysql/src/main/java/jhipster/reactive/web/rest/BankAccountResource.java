@@ -110,7 +110,7 @@ public class BankAccountResource {
     public Mono<ResponseEntity<BankAccount>> getBankAccount(@PathVariable Long id) {
         log.debug("REST request to get BankAccount : {}", id);
         return asyncUtil.async(() -> {
-            BankAccount bankAccount = bankAccountRepository.getOne(id);
+            BankAccount bankAccount = bankAccountRepository.findById(id).get();
             return ResponseUtil.wrapOrNotFound(Optional.ofNullable(bankAccount));
         });
     }

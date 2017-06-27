@@ -25,9 +25,11 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -220,7 +222,9 @@ public class OperationResourceIntTest {
         int databaseSizeBeforeUpdate = operationRepository.findAll().size();
 
         // Update the operation
-        Operation updatedOperation = operationRepository.getOne(operation.getId());
+        Optional<Operation> updatedOperationOp = operationRepository.findById(operation.getId());
+        assertTrue(updatedOperationOp.isPresent());
+        Operation updatedOperation = updatedOperationOp.get();
         updatedOperation.setDate(UPDATED_DATE);
         updatedOperation.setDescription(UPDATED_DESCRIPTION);
         updatedOperation.setAmount(UPDATED_AMOUNT);

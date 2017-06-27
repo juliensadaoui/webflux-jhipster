@@ -110,7 +110,7 @@ public class LabelResource {
     public Mono<ResponseEntity<Label>> getLabel(@PathVariable Long id) {
         log.debug("REST request to get Label : {}", id);
         return asyncUtil.async(() -> {
-            Label label = labelRepository.getOne(id);
+            Label label = labelRepository.findById(id).get();
             return ResponseUtil.wrapOrNotFound(Optional.ofNullable(label));
         });
     }

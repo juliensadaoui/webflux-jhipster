@@ -130,21 +130,10 @@ public class AccountResource {
     @GetMapping("/account")
     @Timed
     public Mono<ResponseEntity<UserDTO>> getAccount() {
-//
-//            User u = userService.getUserWithAuthorities();
-//            System.out.println(u);
-//            Optional<User> o = Optional.ofNullable(u);
-//            System.out.println(o.isPresent());
-//            ResponseEntity<UserDTO> r =  o.map(user -> new ResponseEntity<>(new UserDTO(user), HttpStatus.OK))
-//                .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
-//            System.out.println(r.getStatusCode());
-//            return r;
-
+        String s = SecurityUtils.getCurrentUserLogin(); // not compatible with Webflux
         return asyncUtil.async(() -> {
-            User u = userService.getUserWithAuthorities(new Long (3));
-            return ResponseUtil.wrapOrNotFound(Optional.ofNullable(
-                (u == null) ? null : new UserDTO(u)
-            ));
+            Optional<User> u = userService.getUserWithAuthoritiesByLogin(s);
+            return ResponseUtil.wrapOrNotFound(u.map(UserDTO::new));
         });
     }
 
