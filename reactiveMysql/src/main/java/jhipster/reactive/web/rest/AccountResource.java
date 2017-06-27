@@ -1,7 +1,6 @@
 package jhipster.reactive.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-
 import io.github.jhipster.web.util.ResponseUtil;
 import jhipster.reactive.domain.User;
 import jhipster.reactive.repository.UserRepository;
@@ -13,8 +12,6 @@ import jhipster.reactive.web.rest.util.AsyncUtil;
 import jhipster.reactive.web.rest.util.HeaderUtil;
 import jhipster.reactive.web.rest.vm.KeyAndPasswordVM;
 import jhipster.reactive.web.rest.vm.ManagedUserVM;
-import jhipster.reactive.web.rest.util.HeaderUtil;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +25,6 @@ import reactor.core.publisher.Mono;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.Optional;
 
 /**
@@ -100,11 +96,9 @@ public class AccountResource {
     @GetMapping("/activate")
     @Timed
     public Mono<ResponseEntity<String>> activateAccount(@RequestParam(value = "key") String key) {
-        return asyncUtil.async(() -> {
-            return userService.activateRegistration(key)
-                .map(user -> new ResponseEntity<String>(HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
-        });
+        return asyncUtil.async(() -> userService.activateRegistration(key)
+            .map(user -> new ResponseEntity<String>(HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)));
     }
 
     /**
@@ -117,9 +111,7 @@ public class AccountResource {
     @Timed
     public Mono<String> isAuthenticated(HttpServletRequest request) {
         log.debug("REST request to check if the current user is authenticated");
-        return asyncUtil.async(() -> {
-            return request.getRemoteUser();
-        });
+        return asyncUtil.async(request::getRemoteUser);
     }
 
     /**
@@ -130,9 +122,9 @@ public class AccountResource {
     @GetMapping("/account")
     @Timed
     public Mono<ResponseEntity<UserDTO>> getAccount() {
-        String s = SecurityUtils.getCurrentUserLogin(); // not compatible with Webflux
+        String login = SecurityUtils.getCurrentUserLogin(); // not compatible with Webflux
         return asyncUtil.async(() -> {
-            Optional<User> u = userService.getUserWithAuthoritiesByLogin(s);
+            Optional<User> u = userService.getUserWithAuthoritiesByLogin(login);
             return ResponseUtil.wrapOrNotFound(u.map(UserDTO::new));
         });
     }
@@ -192,13 +184,11 @@ public class AccountResource {
         produces = MediaType.TEXT_PLAIN_VALUE)
     @Timed
     public Mono<ResponseEntity> requestPasswordReset(@RequestBody String mail) {
-        return asyncUtil.async(() -> {
-            return userService.requestPasswordReset(mail)
-                .map(user -> {
-                    mailService.sendPasswordResetMail(user);
-                    return new ResponseEntity<>("email was sent", HttpStatus.OK);
-                }).orElse(new ResponseEntity<>("email address not registered", HttpStatus.BAD_REQUEST));
-        });
+        return asyncUtil.async(() -> userService.requestPasswordReset(mail)
+            .map(user -> {
+                mailService.sendPasswordResetMail(user);
+                return new ResponseEntity<>("email was sent", HttpStatus.OK);
+            }).orElse(new ResponseEntity<>("email address not registered", HttpStatus.BAD_REQUEST)));
     }
 
     /**
@@ -213,7 +203,6 @@ public class AccountResource {
     @Timed
     public Mono<ResponseEntity<String>> finishPasswordReset(@RequestBody KeyAndPasswordVM keyAndPassword) {
         return asyncUtil.async(() -> {
-
             if (!checkPasswordLength(keyAndPassword.getNewPassword())) {
                 return new ResponseEntity<>("Incorrect password", HttpStatus.BAD_REQUEST);
             }

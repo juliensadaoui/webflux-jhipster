@@ -94,9 +94,7 @@ public class BankAccountResource {
     @Timed
     public Mono<List<BankAccount>> getAllBankAccounts() {
         log.debug("REST request to get all BankAccounts");
-        return asyncUtil.async(() -> {
-            return bankAccountRepository.findAll();
-        });
+        return asyncUtil.async(bankAccountRepository::findAll);
     }
 
     /**
@@ -110,8 +108,8 @@ public class BankAccountResource {
     public Mono<ResponseEntity<BankAccount>> getBankAccount(@PathVariable Long id) {
         log.debug("REST request to get BankAccount : {}", id);
         return asyncUtil.async(() -> {
-            BankAccount bankAccount = bankAccountRepository.findById(id).get();
-            return ResponseUtil.wrapOrNotFound(Optional.ofNullable(bankAccount));
+            Optional<BankAccount> bankAccount = bankAccountRepository.findById(id);
+            return ResponseUtil.wrapOrNotFound(bankAccount);
         });
     }
 

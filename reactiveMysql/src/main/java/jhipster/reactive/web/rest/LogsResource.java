@@ -43,7 +43,7 @@ public class LogsResource {
         asyncUtil.async(() -> {
             LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
             context.getLogger(jsonLogger.getName()).setLevel(Level.valueOf(jsonLogger.getLevel()));
-            return "";
+            return null;
         });
     }
 }

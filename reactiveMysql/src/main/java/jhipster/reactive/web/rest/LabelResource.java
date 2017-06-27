@@ -94,9 +94,7 @@ public class LabelResource {
     @Timed
     public Mono<List<Label>> getAllLabels() {
         log.debug("REST request to get all Labels");
-        return asyncUtil.async(() -> {
-            return labelRepository.findAll();
-        });
+        return asyncUtil.async(labelRepository::findAll);
     }
 
     /**
@@ -110,8 +108,8 @@ public class LabelResource {
     public Mono<ResponseEntity<Label>> getLabel(@PathVariable Long id) {
         log.debug("REST request to get Label : {}", id);
         return asyncUtil.async(() -> {
-            Label label = labelRepository.findById(id).get();
-            return ResponseUtil.wrapOrNotFound(Optional.ofNullable(label));
+            Optional<Label> label = labelRepository.findById(id);
+            return ResponseUtil.wrapOrNotFound(label);
         });
     }
 

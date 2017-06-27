@@ -53,7 +53,6 @@ public class ProfileInfoResource {
             return ribbonProfiles.get(0);
         }
         return null;
-
     }
 
     class ProfileInfoVM {

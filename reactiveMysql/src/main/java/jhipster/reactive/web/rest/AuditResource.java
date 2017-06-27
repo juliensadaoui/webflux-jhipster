@@ -81,8 +81,6 @@ public class AuditResource {
      */
     @GetMapping("/{id:.+}")
     public Mono<ResponseEntity<AuditEvent>> get(@PathVariable Long id) {
-        return asyncUtil.async(() -> {
-            return ResponseUtil.wrapOrNotFound(auditEventService.find(id));
-        });
+        return asyncUtil.async(() -> ResponseUtil.wrapOrNotFound(auditEventService.find(id)));
     }
 }
