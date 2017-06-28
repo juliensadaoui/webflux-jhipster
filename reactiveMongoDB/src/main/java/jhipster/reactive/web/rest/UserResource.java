@@ -24,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
@@ -173,8 +174,8 @@ public class UserResource {
     @GetMapping("/users/authorities")
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
-    public Mono<List<String>> getAuthorities() {
-        return asyncUtil.asyncMono(userService::getAuthorities);
+    public Flux<String> getAuthorities() {
+        return asyncUtil.asyncFlux(userService.getAuthorities());
     }
 
     /**
