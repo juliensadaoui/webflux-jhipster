@@ -25,7 +25,7 @@
         <!-- Overridden to get metrics-jcache -->
         <dropwizard-metrics.version>3.2.2</dropwizard-metrics.version>
         <frontend-maven-plugin.version>1.4</frontend-maven-plugin.version>
-        <gatling-charts-highcharts.version>2.2.5</gatling-charts-highcharts.version>
+        <gatling.version>2.2.5</gatling.version>
         <gatling-maven-plugin.version>2.2.4</gatling-maven-plugin.version>
         <hibernate.version>5.2.8.Final</hibernate.version>
         <hikaricp.version>2.6.0</hikaricp.version>
@@ -104,7 +104,7 @@
         <dependency>
             <groupId>io.gatling.highcharts</groupId>
             <artifactId>gatling-charts-highcharts</artifactId>
-            <version>${gatling-charts-highcharts.version}</version>
+            <version>${gatling.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -386,7 +386,7 @@
                 <configuration>
                     <configFolder>src/test/gatling/conf</configFolder>
                     <dataFolder>src/test/gatling/user-files/data</dataFolder>
-                    <resultsFolder>gatling-results</resultsFolder>
+                    <resultsFolder>gatling-results/</resultsFolder>
                     <simulationsFolder>src/test/gatling/user-files/simulations</simulationsFolder>
                     <!--
                     This will run multiple simulations one by one. Useful when doing Gatling
