@@ -1,0 +1,10 @@
+{
+  "simulation": "OperationGatlingTest",
+  "simulationId": "operationgatlingtest",
+  "start": 1498750888480,
+  "description": "null",
+  "scenarios": ["Users"],
+  "assertions": [
+
+  ]
+}
